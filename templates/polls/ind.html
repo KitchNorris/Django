@@ -1,0 +1,15 @@
+{% extends 'polls/base.html' %}
+
+{% block header %}
+    <div class="jumbotron">
+        <h1>Отслеживай свое обучение</h1>
+    </div>
+{% endblock header %}
+{% block content %}
+    <h2>
+        <a href="{% url 'users:register' %}">Зарегистрируй аккаунт</a> и начни обучаться уже сегодня.
+    </h2>
+    <h2>
+        Делай заметки в своём суперсовременном блоге, делись со своими подписчиками и получай вагоны лайков!
+    </h2>
+{% endblock content %}

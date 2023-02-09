@@ -1,0 +1,22 @@
+{% extends 'polls/base.html' %}
+
+{% block header %}
+    <h1>Мои темы</h1>
+{% endblock header %}
+
+{% block content %}
+
+    <ul>
+        {% for topic in topics %}
+          <li>
+                <h3>
+                    <a href="{% url 'polls:topic' topic.id %}">{{ topic }}</a>
+                </h3>
+          </li>
+        {% empty %}
+          <li>Нет тем</li>
+        {% endfor %}
+    </ul>
+
+    <h3><a href="{% url 'polls:new_topic' %}">Добавить новую тему:</a></h3>
+{% endblock content %}

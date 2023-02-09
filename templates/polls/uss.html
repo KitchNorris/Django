@@ -1,0 +1,25 @@
+{% extends 'polls/base.html' %}
+
+{% block header %}
+    <h1>Юзеры</h1>
+{% endblock header %}
+
+{% block content %}
+
+    <ul>
+        {% for us in uss %}
+            {% if us != request.user %}
+                <li>
+                    <h3>
+                        <a href="{% url 'polls:userstops' us.id %}">{{ us.username }}</a>
+                    </h3>
+                </li>
+            {% endif %}
+        {% empty %}
+          <li>Нет юзеров</li>
+        {% endfor %}
+    </ul>
+
+    <button type="button" name="submit" onclick="location.href='{% url 'polls:ussort' %}'">Сортировать</button>
+
+{% endblock content %}

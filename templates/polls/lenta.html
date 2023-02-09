@@ -1,0 +1,64 @@
+{% extends 'polls/base.html' %}
+
+{% block header %}
+    <h1>Лента</h1>
+{% endblock header %}
+
+{% block content %}
+
+    {% for entry in page_obj %}
+        <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>
+                        {{ entry.pub_date | date:"H:m D d M Y" }}
+                        {{ entry.topic.owner }}
+                    </h3>
+                </div>
+
+                <div class="panel-body">
+                    {{ entry.text | linebreaks }}
+                </div>
+
+                {% if not entry.is_read %}
+                    <form action="{% url 'polls:mark_as_read' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="entry_id" value="{{ entry.id }}">
+                        <input type="submit" value="Пометить как прочитано">
+                    </form>
+                {% endif %}
+        </div>
+
+    {% empty %}
+       Но энтри
+    {% endfor %}
+
+    <nav aria-label="Новостя">
+        <ul class="pager">
+            {% if page_obj.has_previous %}
+                <li><a href="?page=1">&laquo; Первая</a></li>
+                <li><a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a></li>
+            {% endif %}
+
+            <span class="current">
+                <li><a> Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</a></li>
+            </span>
+
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}">Следующая</a></li>
+                <li><a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <form action="{% url 'polls:lenta' %}" method="get" class="form-inline">
+        <div class="form-group">
+            <label for="filter" class="sr-only">Filter:</label>
+            <select name="filter" id="filter" class="form-control">
+                <option value="all">Все посты</option>
+                <option value="flagged">Прочитанные посты</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Фильтр</button>
+    </form>
+
+{% endblock content %}

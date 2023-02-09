@@ -1,0 +1,43 @@
+{% extends 'polls/base.html' %}
+
+{% block header %}
+    <h2>{{ topic }}</h2>
+{% endblock header %}
+
+{% block content %}
+
+    <p>Статьи:</p>
+    {% if topic.owner == request.user %}
+    <p>
+        <a href="{% url 'polls:new_entry' topic.id %}">Добавить новый текст</a>
+    </p>
+    {% endif %}
+    <ul>
+        {% for entry in entries %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>
+                        {{ entry.pub_date | date:"H:m D d M Y" }}
+                        {% if topic.owner == request.user %}
+                        <small>
+                            <a href="{% url 'polls:edit_entry' entry.id %}">Редактировать текст</a>
+                        </small>
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    {{ entry.text | linebreaks }}
+                </div>
+            </div>
+
+        {% empty %}
+          Но энтри
+        {% endfor %}
+
+        {% if topic.owner != request.user %}
+            <button type="button" name="submit" onclick="location.href='{% url 'polls:userstops' topic.owner.id %}'">Назад</button>
+        {% elif topic.owner == request.user %}
+            <button type="button" name="submit" onclick="location.href='{% url 'polls:topics' %}'">Назад</button>
+        {% endif %}
+    </ul>
+{% endblock content %}

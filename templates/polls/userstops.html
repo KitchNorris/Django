@@ -1,0 +1,40 @@
+{% extends 'polls/base.html' %}
+
+{% block header %}
+    <h1>Темы {{ username }}</h1>
+{% endblock header %}
+
+{% block content %}
+
+    <ul>
+        {% for topic in topics %}
+          <li>
+                <h3>
+                    <a href="{% url 'polls:topic' topic.id %}">{{ topic }}</a>
+                </h3>
+          </li>
+
+        {% empty %}
+          <li>Нет тем</li>
+        {% endfor %}
+    </ul>
+
+    <ul>
+        <button type="button" name="submit" onclick="location.href='{% url 'polls:uss' %}'">Назад</button>
+    </ul>
+
+    {% if username != request.user %}
+        <ul>
+            <form action="" method = "POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {% if proof == False %}
+                    <input type = "submit" value = "Подписаться" name="subscribe"/>
+                {% elif proof == True %}
+                    <input type = "submit" value = "Отписаться" name="unsubscribe"/>
+                {% endif %}
+            </form>
+        </ul>
+    {% endif %}
+
+{% endblock content %}
